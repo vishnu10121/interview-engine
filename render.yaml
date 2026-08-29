@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: ai-interview-engine-backend
+    env: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHONPATH
+        value: .
+      - key: SECRET_KEY
+        generateValue: true
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://ai-interview-engine-frontend.onrender.com
+
+  - type: static
+    name: ai-interview-engine-frontend
+    env: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_API_BASE_URL
+        value: https://ai-interview-engine-backend.onrender.com
+      - key: REACT_APP_GOOGLE_CLIENT_ID
+        sync: false
