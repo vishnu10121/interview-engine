@@ -87,7 +87,13 @@ const ResumePage = () => {
       setAnalysis(atsData);
     } catch (err) {
       console.error('Resume analysis failed:', err);
-      setError('Failed to analyze resume. Please try again or upload a clearer PDF.');
+      const errorMsg =
+        err.response?.data?.detail ||
+        err.response?.data?.error ||
+        (err.code === 'ERR_NETWORK'
+          ? 'Backend server is starting up or unreachable. Render free tier takes ~50s on first spin-up. Please wait 15 seconds and try again!'
+          : err.message || 'Failed to analyze resume. Please try again or upload a clearer PDF.');
+      setError(errorMsg);
     } finally {
       clearInterval(progressInterval);
       clearInterval(timerInterval);

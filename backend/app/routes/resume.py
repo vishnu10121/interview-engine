@@ -13,10 +13,10 @@ async def extract_resume(file: UploadFile = File(...)):
 
     try:
         raw_text = resume_parser.extract_text_from_pdf(file.file)
-        if not raw_text or len(raw_text) < 50:
+        if not raw_text or len(raw_text.strip()) < 10:
             return {
                 "success": False,
-                "error": "Could not extract text from PDF. Please paste manually.",
+                "error": "Could not extract readable text from PDF. The PDF might be scanned/image-based or empty.",
                 "raw_text": raw_text[:500] if raw_text else ""
             }
 
@@ -33,7 +33,7 @@ async def extract_resume(file: UploadFile = File(...)):
     except Exception as exc:
         return {
             "success": False,
-            "error": f"Failed to parse: {str(exc)}"
+            "error": f"Failed to parse PDF: {str(exc)}"
         }
 
 

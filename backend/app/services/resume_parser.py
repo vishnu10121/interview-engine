@@ -30,15 +30,31 @@ class ResumeParser:
         }
 
     def extract_text_from_pdf(self, pdf_file):
-        """Extract text from PDF using PyPDF2"""
+        """Extract text from PDF using PyPDF2 with safe stream handling"""
         try:
-            pdf_reader = PyPDF2.PdfReader(pdf_file)
+            import io
+            if hasattr(pdf_file, 'seek'):
+                try:
+                    pdf_file.seek(0)
+                except Exception:
+                    pass
+
+            if hasattr(pdf_file, 'read'):
+                content = pdf_file.read()
+                pdf_stream = io.BytesIO(content)
+            else:
+                pdf_stream = pdf_file
+
+            pdf_reader = PyPDF2.PdfReader(pdf_stream)
             text = ""
             for page in pdf_reader.pages:
-                extracted = page.extract_text()
-                if extracted:
-                    text += extracted + "\n"
-            return text
+                try:
+                    extracted = page.extract_text()
+                    if extracted:
+                        text += extracted + "\n"
+                except Exception:
+                    continue
+            return text.strip()
         except Exception as e:
             raise Exception(f"Error reading PDF: {str(e)}")
 
