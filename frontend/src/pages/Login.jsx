@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 
-const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
+const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || '467625625228-vs1j0u5plelrhnb59qrktmnvu6t7tlub.apps.googleusercontent.com';
 const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8010';
 
 const loadingMessages = [
