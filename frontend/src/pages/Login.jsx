@@ -61,6 +61,17 @@ const Login = () => {
     }
   };
 
+  const handleGuestLogin = () => {
+    localStorage.setItem('token', 'demo-token-12345');
+    localStorage.setItem('userName', 'Vishnu');
+    localStorage.setItem('user', JSON.stringify({
+      name: 'Vishnu',
+      email: 'vishnuraj.40132@gmail.com',
+      provider: 'guest'
+    }));
+    navigate('/dashboard');
+  };
+
   const handleGoogleError = () => {
     setError('Google login failed. Please try again.');
   };
@@ -198,13 +209,23 @@ const Login = () => {
                     </div>
                   </GoogleOAuthProvider>
                 ) : (
-                  <div className="rounded-xl border border-orange-500/30 bg-orange-500/5 px-4 py-3 text-center text-sm text-orange-200">
-                    Add REACT_APP_GOOGLE_CLIENT_ID to enable Google sign-in.
+                  <div className="space-y-3">
+                    <div className="rounded-xl border border-orange-500/30 bg-orange-500/5 px-4 py-3 text-center text-sm text-orange-200">
+                      Add <code className="text-orange-300 font-mono">REACT_APP_GOOGLE_CLIENT_ID</code> to enable Google sign-in.
+                    </div>
                   </div>
                 )}
 
-                <div className="text-center text-sm text-slate-400">
-                  Continue with your Google account to enter the interview workspace
+                <button
+                  type="button"
+                  onClick={handleGuestLogin}
+                  className="w-full rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-400 py-3 px-4 text-sm font-semibold text-slate-950 shadow-lg shadow-orange-500/20 hover:opacity-95 transition active:scale-[0.98]"
+                >
+                  ⚡ Continue as Guest (Instant Access)
+                </button>
+
+                <div className="text-center text-xs text-slate-400">
+                  Continue with your Google account or enter directly as Guest
                 </div>
               </div>
             </div>
